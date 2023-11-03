@@ -11,7 +11,7 @@
   width: 100%;
 }
 
-.input {
+input {
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -22,20 +22,19 @@
   cursor: pointer;
 }
 
-.input:focus {
-  outline-color: yellow;
+input:focus {
+  outline-color: rgb(242, 242, 180);
 }
 
-.input::placeholder {
+input::placeholder {
   color: darkgray;
 }
-
 
 button {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: yellow;
-  color: #fff;
+  background-color: rgb(242, 242, 180);
+  color: #005a9c;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -43,4 +42,5 @@ button {
 
 button:hover {
   background-color: #005a9c;
+  color:rgb(242, 242, 180);
 }

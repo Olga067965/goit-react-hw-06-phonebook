@@ -1,29 +1,24 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import style from './ContactList.module.css';
-import { deleteContact } from '../../redux/contactSlice';
+import React, { Fragment } from 'react';
+import { useSelector } from 'react-redux';
+import { selectContacts, selectFilter } from 'redux/selectors';
+import ContactListItem from './ContactListItem';
 
 const ContactList = () => {
-  const dispatch = useDispatch();
-  const items = useSelector(state => state.contacts.items);
+
+  const filter = useSelector(selectFilter)
+  const contacts = useSelector(selectContacts)
+
+  const filteredContacts = filter ? contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLocaleLowerCase())) : contacts;
 
   return (
-    <ul className={style.list}>
-      {items.map(({ id, name, phone }) => (
-        <li className={style.item} key={id}>
-          <p className={style.info}>
-            {name}: {phone}
-          </p>
-          <button
-            className={style.btn}
-            onClick={() => dispatch(deleteContact(id))}
-          >
-            Delete
-          </button>
-        </li>
-      ))}
+    <Fragment>
+    <ul>
+      <ContactListItem
+      contacts={filteredContacts}
+      />
     </ul>
-  );
+    </Fragment>
+  )
 };
 
 export default ContactList;

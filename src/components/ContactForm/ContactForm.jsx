@@ -1,89 +1,57 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contactSlice';
+import React from 'react';
 import style from './ContactForm.module.css';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/contactSlice';
+import { selectContacts } from 'redux/selectors';
+
+
 
 const ContactForm = () => {
+
   const dispatch = useDispatch();
-  const items = useSelector(state => state.contacts.items);
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const contacts = useSelector(selectContacts)
 
-  const handleChange = ({ target }) => {
-    const { name, value } = target;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
 
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
+    if (contacts.some((contact) => contact.name === form.elements.name.value)) {
+      alert(form.elements.name.value + ' is already in contacts.');
+      }
+      else {
+      dispatch(addContact(form.elements.name.value, form.elements.number.value))
+      }
 
-      case 'phone':
-        setPhone(value);
-        break;
-
-      default:
-        break;
-    }
-  };
-
-  const handleCheckUnique = newName => {
-    const handleName = newName.toLowerCase();
-    return items.find(({ name }) => name.toLowerCase() === handleName);
-  };
-
-  const repeatName = handleCheckUnique(name);
-
-  const handleSubmit = event => {
-    event.preventDefault();
-
-    if (repeatName) {
-      toast.error(`${name} is already in contacts.`);
-    } else {
-      const newContact = { name, phone };
-      dispatch(addContact(newContact));
-    }
-
-    reset();
-  };
-
-  const reset = () => {
-    setName('');
-    setPhone('');
-  };
+    form.reset();
+  }
 
   return (
     <form className={style.form} onSubmit={handleSubmit}>
-      <label className={style.label}>
-        Name:
-        <input
-          className={style.input}
-          type="text"
-          name="name"
-          placeholder="Enter name"
-          value={name}
-          onChange={handleChange}
-          required
-        />
-      </label>
-      <label className={style.label}>
-        Number:
-        <input
-          className={style.input}
-          type="tel"
-          name="phone"
-          placeholder="Enter phone number"
-          value={phone}
-          onChange={handleChange}
-          required
-        />
-      </label>
-      <button className={style.button} type="submit">
-        Add Contact
-      </button>
-    </form>
-  );
-};
+         <label className={style.label}>
+           Name
+           <input
+             type="text"
+             name="name"
+             placeholder="Enter name"
+             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+             title="Name may contain only letters, apostrophe, dash and spaces."
+             required
+           />
+         </label>
+         <label className={style.label}>
+           Number
+           <input
+             type="tel"
+             name="number"
+             placeholder="Enter phone number"
+             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+             required
+           />
+         </label>
+         <button className={style.button}type='submit'>Add contact</button>
+       </form>
+  )
+}
 
-export default ContactForm;
+export default ContactForm

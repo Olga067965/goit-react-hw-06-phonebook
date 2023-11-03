@@ -1,27 +1,26 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import style from './Filter.module.css';
-import { filterContact } from '../../redux/contactSlice';
+import style from'./Filter.module.css'
+import { useDispatch} from 'react-redux';
+import { setContactFilter } from 'redux/filterSlice';
 
-const Filter = () => {
+
+const SearchingFilter = () => {
+
   const dispatch = useDispatch();
-  const filterBy = useSelector(state => state.contacts.filter);
 
-  const onChange = e => dispatch(filterContact(e.target.value));
+  const handleFilterChange = (e) => dispatch(setContactFilter(e.target.value))
 
   return (
-    <label className={style.label}>
-      Filter by name:
-      <input
-        className={style.input}
-        type="text"
-        name="filter"
-        value={filterBy}
-        onChange={onChange}
-        placeholder="Enter a name to search"
-      />
-    </label>
-  );
-};
+    <label className={style.label} >
+        Find contacts by name
+        <input onChange={handleFilterChange}
+          type="text"
+          name="filter"
+          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          placeholder="Enter name"
+        />
+        </label>
+  )
+}
 
-export default Filter;
+export default SearchingFilter;

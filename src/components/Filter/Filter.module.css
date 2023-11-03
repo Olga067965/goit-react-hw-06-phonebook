@@ -5,7 +5,7 @@
   font-size: 18px;
 }
 
-.input {
+input {
   display: block;
   margin-top: 10px;
   padding: 10px;
@@ -15,10 +15,10 @@
   cursor: pointer;
 }
 
-.input:focus {
-  outline-color: yellow;
+input:focus {
+  outline-color: rgb(242, 242, 180);
 }
 
-.input::placeholder {
+input::placeholder {
   color: darkgray;
 }
